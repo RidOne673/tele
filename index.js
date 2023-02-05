@@ -151,7 +151,7 @@ Terimakasih.
       await msg.reply.text('Testing speed...');
       let neww = performance.now();
       let speed = neww - old
-      has = `
+      hass = `
 Merespon dalam ${speed} millidetik
 
 💻 Server Info :
