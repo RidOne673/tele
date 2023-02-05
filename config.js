@@ -1,4 +1,4 @@
-global.teleApi = '6004424169:AAECNg6YF2j7ni3ebnOn7cZLgl7vZ7EP6ss'
+global.teleApi = '5718876282:AAEx3OZBkr4EIJybGzR-Uhhp4cfQAmym118'
 global.gptApi = ''
 global.ownId = '1005747269'
 
