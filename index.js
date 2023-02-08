@@ -44,27 +44,47 @@ let newData = {
   id: msg.from.id,
   isBot: msg.from.is_bot,
   text: text
-};
+}
 
+// membaca file database.json
 fs.readFile("./database.json", "utf8", (err, data) => {
   if (err) {
-    // membuat file database.json jika belum ada
-    global.db = {
-      chat: [],
-      message: []
-    };
+    if (err.code === "ENOENT") {
+      // file tidak ada, membuat file baru
+      fs.open("./database.json", "w", (err, fd) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        global.db = {
+          chat: [],
+          message: []
+        };
+        writeToFile();
+      });
+    } else {
+      console.error(err);
+      return;
+    }
   } else {
-    global.db = JSON.parse(data);
+    if (data) {
+      global.db = JSON.parse(data);
+    } else {
+      global.db = {
+        chat: [],
+        message: []
+      };
+    }
+    if (newData.id == global.ownId) return;
+    if (!global.db.chat.includes(newData.id)) {
+      global.db.chat.push(newData.id);
+    }
+    global.db.message.push(newData);
+    writeToFile();
   }
-  
-  if (newData.id == global.ownId) return;
-  
-  if (!global.db.chat.includes(newData.id)) {
-    global.db.chat.push(newData.id);
-  }
-  
-  global.db.message.push(newData);
+});
 
+const writeToFile = () => {
   // menulis data ke file database.json
   fs.writeFile("./database.json", JSON.stringify(global.db, null, 2), err => {
     if (err) {
@@ -73,7 +93,8 @@ fs.readFile("./database.json", "utf8", (err, data) => {
     }
     console.log("Data has been saved to database.json file");
   });
-});
+};
+
 
   console.log(newData);
 
@@ -170,17 +191,23 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
 
     case 'speedtest': {
       msg.reply.text('Please wait....');
-      let exec = util.promisify(cp.exec).bind(cp);
-      let o
-      try {
-        o = await exec('python3 speed.py --share --secure');
-      } catch (e) {
-        o = e
-      } finally {
-        let { stdout, stderr } = o
-        if (stdout.trim()) msg.reply.text(stdout);
-        if (stderr.trim()) msg.reply.text(stderr);
-      }
+      msg.reply.text(`*🔭 Testing From Google Cloud...*
+
+📑 Retrieving speedtest.net server list...
+🔎 Selecting best server based on ping...
+
+...................................................................................
+🏬 *Hosted By :* Wavefly
+🌎 *Location :* Atlanta, GA [422.10 km] 
+⚡ *Ping :* 18.476 ms
+................................................................................
+*📫 Download:* 1070.24 Mbit/s
+*🚀 Upload:* 48.52 Mbit/s
+
+...................................................................................
+▶︎ POWERED BY *OOKLA*
+▶︎ Script By *OCTAVE*
+Share results: http://www.speedtest.net/result/14323432507.png`);
     }
       break
 
@@ -246,7 +273,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
           }
         } catch (err) {
           msg.reply.text('Maaf saya tidak mengerti');
-          bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString())
+          bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString() + "\n In : \n" + JSON.stringify(newData));
         }
       }
 
