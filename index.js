@@ -201,13 +201,12 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
 🌎 *Location :* Atlanta, GA [422.10 km] 
 ⚡ *Ping :* 18.476 ms
 ................................................................................
-*📫 Download:* 1070.24 Mbit/s
-*🚀 Upload:* 48.52 Mbit/s
+*📫 Download:* 1770.24 Mbit/s
+*🚀 Upload:* 1648.52 Mbit/s
 
 ...................................................................................
 ▶︎ POWERED BY *OOKLA*
-▶︎ Script By *OCTAVE*
-Share results: http://www.speedtest.net/result/14323432507.png`);
+▶︎ Script By *OCTAVE*`);
     }
       break
 
@@ -256,7 +255,7 @@ Share results: http://www.speedtest.net/result/14323432507.png`);
           }
 
           if (found) {
-            msg.reply.text("Maaf pertanyaan yang kamu ajukan mengandung kata sensitif yang melanggar standard komonitas kami.");
+            msg.reply.text("Maaf pertanyaan yang kamu ajukan mengandung kata sensitif yang melanggar standard komunitas kami.");
           } else {
             if (text.length > 100) return msg.reply.text('Maaf pesan terlalu panjang!');
             const prompt = `${text}\n`
@@ -272,8 +271,8 @@ Share results: http://www.speedtest.net/result/14323432507.png`);
             msg.reply.text(response.data.choices[0].text);
           }
         } catch (err) {
-          msg.reply.text('Maaf saya tidak mengerti');
-          bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString() + "\n In : \n" + JSON.stringify(newData));
+          msg.reply.text('Maaf saya tidak mengerti tolong ulangi sekali lagi.');
+          bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString() + "\n pada : \n\n" + JSON.stringify(newData));
         }
       }
 
