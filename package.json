@@ -14,7 +14,6 @@
     "child_process": "^1.0.2",
     "dotenv": "^16.0.3",
     "human-readable": "^0.2.1",
-    "moment-timezone": "^0.5.37",
     "node-fetch": "^3.2.6",
     "openai": "^3.1.0",
     "os": "^0.1.2",

@@ -37,76 +37,61 @@ bot.on('text', async (msg) => {
   const command = body.slice(1).trim().split(/ +/).shift().toLowerCase();
   const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
 
-  let newData = {
-    date: time,
-    name: msg.from.first_name,
-    username: msg.from.username,
-    id: msg.from.id,
-    isBot: msg.from.is_bot,
-    text: text
-  }
+let newData = {
+  date: time,
+  name: msg.from.first_name,
+  username: msg.from.username,
+  id: msg.from.id,
+  isBot: msg.from.is_bot,
+  text: text
+};
 
-  // membaca file database.json
-  fs.readFile("./database.json", "utf8", (err, data) => {
+fs.readFile("./database.json", "utf8", (err, data) => {
+  if (err) {
+    // membuat file database.json jika belum ada
+    global.db = {
+      chat: [],
+      message: []
+    };
+  } else {
+    global.db = JSON.parse(data);
+  }
+  
+  if (newData.id == global.ownId) return;
+  
+  if (!global.db.chat.includes(newData.id)) {
+    global.db.chat.push(newData.id);
+  }
+  
+  global.db.message.push(newData);
+
+  // menulis data ke file database.json
+  fs.writeFile("./database.json", JSON.stringify(global.db, null, 2), err => {
     if (err) {
       console.error(err);
       return;
     }
-
-    if (data) {
-      database = JSON.parse(data);
-    } else {
-      database = [];
-    }
-
-    database.push(newData);
-
-    // menulis data ke file database.json
-    fs.writeFile("./database.json", JSON.stringify(database, null, 2), err => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log("Data has been saved to database.json file");
-    });
+    console.log("Data has been saved to database.json file");
   });
+});
 
   console.log(newData);
 
   switch (command) {
 
-    case 'sf': {
+  	case 'bc': {
       if (!msg.from.id == global.ownId) return
       if (!text) return msg.reply.text('text mana brow..')
-      let code = args.slice(1).join('')
-      let path = args[0]
-      fs.writeFileSync(path, code)
-      msg.reply.text(`tersimpan di ${path}`)
-    }
-      break
+      	let pesan = text
+		global.db.chat.forEach((item, index) => {
+		setTimeout(() => {
+		bot.sendMessage(item, pesan);
+		}, index * 1000);
+		});
+  	}
+    break
 
-    case 'speedtest': {
-      msg.reply.text('Please wait....');
-      let exec = util.promisify(cp.exec).bind(cp);
-      let o
-      try {
-        o = await exec('python3 speed.py --share --secure');
-      } catch (e) {
-        o = e
-      } finally {
-        let { stdout, stderr } = o
-        if (stdout.trim()) msg.reply.text(stdout);
-        if (stderr.trim()) msg.reply.text(stderr);
-      }
-    }
-      break
-
-    case 'start': {
-      msg.reply.text(`Selamat datang di bot ChatGPT saya!\n\nKetik pertanyaanmu untuk bertanya.`);
-    }
-      break
-
-    case 'donasi': case 'donate': {
+  	case 'donasi': case 'donate': {
       txt = `Donasi seikhlasnya agar bot bisa terus aktif
 
 Bank : ${global.donate.bank} (${global.donate.bankName})
@@ -119,7 +104,7 @@ Terimakasih.
 `
       bot.sendPhoto(msg.from.id, global.donate.qris, { caption: txt });
     }
-      break
+    break
 
     case 'ping': {
       const used = process.memoryUsage();
@@ -173,6 +158,37 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
     }
       break
 
+    case 'sf': {
+      if (!msg.from.id == global.ownId) return
+      if (!text) return msg.reply.text('text mana brow..')
+      let code = args.slice(1).join('')
+      let path = args[0]
+      fs.writeFileSync(path, code)
+      msg.reply.text(`tersimpan di ${path}`)
+    }
+      break
+
+    case 'speedtest': {
+      msg.reply.text('Please wait....');
+      let exec = util.promisify(cp.exec).bind(cp);
+      let o
+      try {
+        o = await exec('python3 speed.py --share --secure');
+      } catch (e) {
+        o = e
+      } finally {
+        let { stdout, stderr } = o
+        if (stdout.trim()) msg.reply.text(stdout);
+        if (stderr.trim()) msg.reply.text(stderr);
+      }
+    }
+      break
+
+    case 'start': {
+      msg.reply.text(`Selamat datang di bot ChatGPT saya!\n\nKetik pertanyaanmu untuk bertanya.`);
+    }
+      break
+
     default: {
 
       if (text.startsWith('>')) {
@@ -187,6 +203,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
       } else if (text.startsWith('$')) {
         if (!msg.from.id == global.ownId) return
         msg.reply.text('Executing...')
+        setTimeout(async() => {
         let o
         try {
           o = await exec(command.trimStart() + ' ' + text.slice(1).trimEnd())
@@ -197,6 +214,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
           if (stdout.trim()) msg.reply.text(stdout)
           if (stderr.trim()) msg.reply.text(stderr)
         }
+       }, 5000);
       } else {
         try {
           badword = global.badword
@@ -226,8 +244,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             });
             msg.reply.text(response.data.choices[0].text);
           }
-        } catch {
+        } catch (err) {
           msg.reply.text('Maaf saya tidak mengerti');
+          bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString())
         }
       }
 

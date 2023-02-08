@@ -1,4 +1,4 @@
-global.teleApi = '5718876282:AAEx3OZBkr4EIJybGzR-Uhhp4cfQAmym118'
+global.teleApi = ''
 global.gptApi = ''
 global.ownId = '1005747269'
 
@@ -11,4 +11,4 @@ global.donate = {
 	qris : "https://i.ibb.co/W0kSRXL/MBRC-1675416263714.png"
 }
 
-global.badword = ["scrape","bunuh","kontol","memek","fuck","ngewe","racun","vagina","penis","sex","bangsat","mencuri","tete"]
+global.badword = ["scrape","bunuh","kontol","memek","fuck","ngewe","racun","vagina","penis","sex","bangsat","mencuri","tete","bom","nigga","negro","slot","bobol","hack","kawin","ngentot","ngentod","ngntd","ngntt","etubuh"];
