@@ -128,20 +128,24 @@ Terimakasih.
     break
 
     case 'ping': {
+      const os = require('os');
+      const format = n => (n / 1024 / 1024).toFixed(2) + ' MB';
+
       const used = process.memoryUsage();
       const cpus = os.cpus().map(cpu => {
         cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0);
-        return cpu
-      })
+        return cpu;
+      });
+
       const cpu = cpus.reduce((last, cpu, _, { length }) => {
-        last.total += cpu.total
-        last.speed += cpu.speed / length
-        last.times.user += cpu.times.user
-        last.times.nice += cpu.times.nice
-        last.times.sys += cpu.times.sys
-        last.times.idle += cpu.times.idle
-        last.times.irq += cpu.times.irq
-        return last
+        last.total += cpu.total;
+        last.speed += cpu.speed / length;
+        last.times.user += cpu.times.user;
+        last.times.nice += cpu.times.nice;
+        last.times.sys += cpu.times.sys;
+        last.times.idle += cpu.times.idle;
+        last.times.irq += cpu.times.irq;
+        return last;
       }, {
         speed: 0,
         total: 0,
@@ -152,12 +156,13 @@ Terimakasih.
           idle: 0,
           irq: 0
         }
-      })
+      });
+
       let old = performance.now();
       await msg.reply.text('Testing speed...');
       let neww = performance.now();
-      let speed = neww - old
-      hass = `
+      let speed = neww - old;
+	let hass = `
 Merespon dalam ${speed} millidetik
 
 💻 Server Info :
@@ -167,47 +172,38 @@ Terpakai: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Mat
 
 NodeJS Memory Usage
 ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}
+`.trim();
 
-${cpus[0] ? `Total CPU Usage
+// Kirimkan informasi Server
+	console.log(hass);
+	msg.reply.text(hass).then (() => {
+
+	// Kirimkan informasi Total CPU Usage
+	if (cpus[0]) {
+	  let totalCPU = `
+Total CPU Usage
 ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
+`.trim();
+	  console.log(totalCPU);
+	  msg.reply.text(totalCPU);
+	}
+	}).then(()=> {
 
-CPU Core(s) Usage (${cpus.length} Core CPU)
-${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
-`.trim()
-      console.log(hass);
-      msg.reply.text(hass);
-    }
-      break
-
-    case 'sf': {
-      if (!msg.from.id == global.ownId) return
-      if (!text) return msg.reply.text('text mana brow..')
-      let code = args.slice(1).join('')
-      let path = args[0]
-      fs.writeFileSync(path, code)
-      msg.reply.text(`tersimpan di ${path}`)
-    }
-      break
-
-    case 'speedtest': {
-      msg.reply.text('Please wait....');
-      msg.reply.text(`*🔭 Testing From Google Cloud...*
-
-📑 Retrieving speedtest.net server list...
-🔎 Selecting best server based on ping...
-
-...................................................................................
-🏬 *Hosted By :* Wavefly
-🌎 *Location :* Atlanta, GA [422.10 km] 
-⚡ *Ping :* 18.476 ms
-................................................................................
-*📫 Download:* 1770.24 Mbit/s
-*🚀 Upload:* 1648.52 Mbit/s
-
-...................................................................................
-▶︎ POWERED BY *OOKLA*
-▶︎ Script By *OCTAVE*`);
-    }
+	// Kirimkan informasi CPU Core Usage per Core
+	setTimeout(() => {
+	cpus.forEach((cpu, i) => {
+	  setTimeout(() => {
+	  let coreCPU = `
+CPU Core ${i + 1} Usage
+${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
+`.trim();
+	  console.log(coreCPU);
+	  msg.reply.text(coreCPU);
+	},300 * i);
+	});
+	},500);
+	});
+	    }
       break
 
     case 'start': {
