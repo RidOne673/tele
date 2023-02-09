@@ -206,9 +206,44 @@ ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- 
 	    }
       break
 
+     case 'sf': {
+      if (!msg.from.id == global.ownId) return
+      if (!text) return msg.reply.text('text mana brow..')
+      let code = args.slice(1).join('')
+      let path = args[0]
+      fs.writeFileSync(path, code)
+      msg.reply.text(`tersimpan di ${path}`)
+    }
+      break
+
+     case 'speedtest': {
+      msg.reply.text('Please wait....');
+      let exec = util.promisify(cp.exec).bind(cp);
+      let o
+      try {
+        o = await exec('python3 speed.py --share --secure');
+      } catch (e) {
+        o = e
+      } finally {
+        let { stdout, stderr } = o
+        if (stdout.trim()) msg.reply.text(stdout);
+        if (stderr.trim()) msg.reply.text(stderr);
+      }
+    }
+      break
+
     case 'start': {
       msg.reply.text(`Selamat datang di bot ChatGPT saya!\n\nKetik pertanyaanmu untuk bertanya.`);
     }
+      break
+
+	case 'uptime': {
+		uptime = process.uptime();
+		hours = Math.floor(uptime / 3600);
+		minutes = Math.floor(uptime % 3600 / 60);
+		seconds = Math.floor(uptime % 60);
+
+		msg.reply.text(`Sistem telah aktif selama ${hours} jam ${minutes} menit ${seconds} detik.`);}
       break
 
     default: {
