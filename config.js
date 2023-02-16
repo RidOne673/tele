@@ -1,6 +1,6 @@
 global.teleApi = '5718876282:AAEx3OZBkr4EIJybGzR-Uhhp4cfQAmym118'
 global.TTteleApi = '6201791036:AAHoRovShULXomyU4kZaKWsry2t0QNojcZw'
-global.gptApi = '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'
+global.gptApi = ''
 global.ownId = '1005747269'
 
 global.donate = {
