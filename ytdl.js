@@ -129,16 +129,17 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
   console.log(newData);
   
  if (isUrl(msg.text)) {
-
+if (!msg.text.includes("//youtu")) return  msg.reply.text('Maaf link youtube tidak terdeteksi.');
+  if (msg.text.includes("short")) return msg.reply.text("Tidak didukung untuk yt shorts.");
   try {
   let hasil = await youtubedlv3(findUrl(msg.text)[0]);
-  msg.reply.text('Sedang diproses')
+  msg.reply.text('Sedang diproses');
 
   let res = hasil.video['360'];
   let link = await res.download();
-
+  bot.sendChatAction(msg.chat.id, 'upload_video');
    let buff = await getBuffer(link);
-    
+  bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
 Tiktok Downloader
 
@@ -152,7 +153,7 @@ info donasi : /donate
 
   bot.sendVideo(msg.chat.id, buff, { caption: caption });
   } catch (e) {
-       msg.reply.text(e.toString);
+       msg.reply.text(e.toString());
         bot.sendDocument(global.ownId, "Terjadi error\n\n" + e.toString());
         }
  }

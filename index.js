@@ -4,6 +4,7 @@ const http = require('http');
 require("./ttdl")
 require("./chatgpt")
 require("./ytdl")
+require("./aytdl")
 require("./config")
 
 const server = http.createServer((req, res) => {

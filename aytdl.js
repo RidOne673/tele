@@ -1,14 +1,15 @@
-const { download } = require("./lib/tt");
+const { youtubedlv2 } = require("@bochilteam/scraper");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
+const fetch = require('node-fetch');
 
 
 require('./config');
 
-const bot = new TeleBot(global.TTteleApi);
+const bot = new TeleBot(global.ytAudioApi);
 
-bot.on(["/start"], (msg) => msg.reply.text(`Selamat datang di bot Tiktok Downloader saya!\n\nPastekan link tiktokmu disini.`));
+bot.on(["/start"], (msg) => msg.reply.text(`Selamat datang di bot Youtube Audio Downloader saya!\n\nPastekan link youtubemu disini.`));
 
 bot.on(["/donate"], (msg) => {
   txt = `Donasi seikhlasnya agar bot bisa terus aktif
@@ -60,7 +61,7 @@ bot.on(["/ping"], async(msg) => {
       await msg.reply.text('Testing speed...');
       let neww = performance.now();
       let speed = neww - old;
-  let hass = `
+	let hass = `
 Merespon dalam ${speed} millidetik
 
 💻 Server Info :
@@ -73,43 +74,43 @@ ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.m
 `.trim();
 
 // Kirimkan informasi Server
-  console.log(hass);
-  msg.reply.text(hass).then (() => {
+	console.log(hass);
+	msg.reply.text(hass).then (() => {
 
-  // Kirimkan informasi Total CPU Usage
-  if (cpus[0]) {
-    let totalCPU = `
+	// Kirimkan informasi Total CPU Usage
+	if (cpus[0]) {
+	  let totalCPU = `
 Total CPU Usage
 ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
 `.trim();
-    console.log(totalCPU);
-    msg.reply.text(totalCPU);
-  }
-  }).then(()=> {
+	  console.log(totalCPU);
+	  msg.reply.text(totalCPU);
+	}
+	}).then(()=> {
 
-  // Kirimkan informasi CPU Core Usage per Core
-  setTimeout(() => {
-  cpus.forEach((cpu, i) => {
-    setTimeout(() => {
-    let coreCPU = `
+	// Kirimkan informasi CPU Core Usage per Core
+	setTimeout(() => {
+	cpus.forEach((cpu, i) => {
+	  setTimeout(() => {
+	  let coreCPU = `
 CPU Core ${i + 1} Usage
 ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
 `.trim();
-    console.log(coreCPU);
-    msg.reply.text(coreCPU);
-  },300 * i);
-  });
-  },500);
-  });
+	  console.log(coreCPU);
+	  msg.reply.text(coreCPU);
+	},300 * i);
+	});
+	},500);
+	});
 });
 
 bot.on(["/uptime"], async(msg) => {
   uptime = process.uptime();
-    hours = Math.floor(uptime / 3600);
-    minutes = Math.floor(uptime % 3600 / 60);
-    seconds = Math.floor(uptime % 60);
+		hours = Math.floor(uptime / 3600);
+		minutes = Math.floor(uptime % 3600 / 60);
+		seconds = Math.floor(uptime % 60);
 
-    msg.reply.text(`Sistem telah aktif selama ${hours} jam ${minutes} menit ${seconds} detik.`);
+		msg.reply.text(`Sistem telah aktif selama ${hours} jam ${minutes} menit ${seconds} detik.`);
 })
 
 bot.on('text', async (msg) => {
@@ -128,21 +129,30 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
   console.log(newData);
   
  if (isUrl(msg.text)) {
-if (!msg.text.includes("tiktok.com/")) return  msg.reply.text('Maaf link tiktok tidak terdeteksi.');
+ if (!msg.text.includes("//youtu")) return  msg.reply.text('Maaf link youtube tidak terdeteksi.');
+  if (msg.text.includes("short")) return msg.reply.text("Tidak didukung untuk yt shorts.");
   try {
-  let hasil = await download(findUrl(msg.text)[0]);
+  
+  let hasil = await youtubedlv2(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses');
-    bot.sendChatAction(msg.chat.id, 'upload_video');
+
+  let res = hasil.audio['128kbps'];
+  let link = await res.download();
+   bot.sendChatAction(msg.chat.id, 'upload_audio');
+   let buff = await getBuffer(link);
+    bot.sendChatAction(msg.chat.id, 'upload_audio');
   let caption = `
 Tiktok Downloader
 
-Username : ${hasil.username}
-Caption : ${hasil.caption}
+Title : ${hasil.title}
+Quality : ${res.quality}
+Size : ${res.fileSizeH}
 
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-  bot.sendVideo(msg.chat.id, hasil.video2, { caption: caption });
+    
+bot.sendAudio(msg.chat.id, buff, {caption: caption}, {fileName: "Audio-by-OCTAVE.mp3"});
   } catch (e) {
        msg.reply.text(e.toString());
         bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());
@@ -160,4 +170,28 @@ function findUrl(text) {
   function isUrl(str) {
   const pattern = /^https?:\/\//;
   return pattern.test(str);
+}
+
+async function getBuffer(url) {
+  const response = await fetch(url);
+  const buffer = await response.buffer();
+  return buffer;
+}
+
+
+function getFileSize(url) {
+  return fetch(url, {
+    method: "HEAD"
+  })
+  .then(response => {
+    if(response.ok) {
+      const contentLength = response.headers.get('content-length');
+      return contentLength;
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
