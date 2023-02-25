@@ -1,16 +1,23 @@
-FROM node:lts-buster
+# set the base image
+FROM node:16-alpine
 
-RUN apt-get update && \
-  apt-get install -y && \
-  apt-get upgrade -y && \
-  rm -rf /var/lib/apt/lists/*
+# set the working directory
+WORKDIR /app
 
-COPY package.json .
+# copy package.json and package-lock.json
+COPY package*.json ./
 
-RUN npm install && npm install i -g pm2
+# install dependencies
+RUN npm install
 
+# copy source code
 COPY . .
 
-EXPOSE 5000
+# set environment variable
+ENV PORT=3000
 
-CMD ["pm2-runtime", "index.js"]
+# expose the port
+EXPOSE 3000
+
+# start the application
+CMD ["npm", "start"]

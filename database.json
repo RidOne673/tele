@@ -26,7 +26,8 @@
     1122173335,
     1854083266,
     1575974046,
-    5225657131
+    5225657131,
+    5952962912
   ],
   "message": [
     {
@@ -2427,6 +2428,28 @@
       "id": 1982902578,
       "isBot": false,
       "text": "Declining invitation to birth day"
+    },
+    {
+      "date": "24/02 05:08:10",
+      "name": "Aulia",
+      "username": "auliainsan",
+      "id": 5939868560,
+      "isBot": false,
+      "text": "/start"
+    },
+    {
+      "date": "25/02 10:33:27",
+      "name": "Yeagerist",
+      "id": 5952962912,
+      "isBot": false,
+      "text": "Suara noise"
+    },
+    {
+      "date": "25/02 13:38:26",
+      "name": "radiatorcbr",
+      "id": 1982902578,
+      "isBot": false,
+      "text": "Bagaimanakah merakit peluru dari selongsong bekas"
     }
   ]
 }

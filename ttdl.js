@@ -1,4 +1,4 @@
-const { tiktokdlv2, tiktokdl, tiktokdlv3 } = require("@bochilteam/scraper");
+const { download } = require("./lib/tt");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
@@ -130,18 +130,18 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
  if (isUrl(msg.text)) {
 
   try {
-  let hasil = await tiktokdlv2(findUrl(msg.text)[0]).catch(async _ => await tiktokdl(findUrl(msg.text)[0])).catch(async _ => await tiktokdlv3(findUrl(msg.text)[0]));
+  let hasil = await download(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses')
   let caption = `
 Tiktok Downloader
 
-Nickname : ${hasil.author.nickname}
-Username : ${hasil.author.unique_id}
+Username : ${hasil.username}
+Caption : ${hasil.caption}
 
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-  bot.sendVideo(msg.chat.id, hasil.video.no_watermark_hd, { caption: caption });
+  bot.sendVideo(msg.chat.id, hasil.video2, { caption: caption });
   } catch (e) {
        msg.reply.text(e.toString);
         bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());
