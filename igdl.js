@@ -1,15 +1,14 @@
-const { youtubedlv2 } = require("@bochilteam/scraper");
+const instagramGetUrl = require("fg-ig");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
-const fetch = require('node-fetch');
 
 
 require('./config');
 
-const bot = new TeleBot(global.ytAudioApi);
+const bot = new TeleBot(global.igDlApi);
 
-bot.on(["/start"], (msg) => msg.reply.text(`Selamat datang di bot Youtube Audio Downloader saya!\n\nPastekan link youtubemu disini.`));
+bot.on(["/start"], (msg) => msg.reply.text(`Selamat datang di bot Instagram downloader saya!\n\nPastekan link instagrammu disini.`));
 
 bot.on(["/donate"], (msg) => {
   txt = `Donasi seikhlasnya agar bot bisa terus aktif
@@ -129,30 +128,23 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
   console.log(newData);
   
  if (isUrl(msg.text)) {
- if (!msg.text.includes("//youtu")) return  msg.reply.text('Maaf link youtube tidak terdeteksi.');
-  if (msg.text.includes("short")) return msg.reply.text("Tidak didukung untuk yt shorts.");
+if (!msg.text.includes("instagram.com/")) return  msg.reply.text('Maaf link instagram tidak terdeteksi.');
   try {
-  
-  let hasil = await youtubedlv2(findUrl(msg.text)[0]);
+  let hasil = await instagramGetUrl(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses');
-
-  let res = hasil.audio['128kbps'];
-  let link = await res.download();
-   bot.sendChatAction(msg.chat.id, 'upload_audio');
-   let buff = await getBuffer(link);
-    bot.sendChatAction(msg.chat.id, 'upload_audio');
+    bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
-Youtube Audio Downloader
-
-Title : ${hasil.title}
-Quality : ${res.quality}
-Size : ${res.fileSizeH}
+Instagram Downloader
 
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-    
-bot.sendAudio(msg.chat.id, buff, {caption: caption}, {fileName: "Audio-by-OCTAVE.mp3"});
+    hasil.url_list.forEach(async(res, i) => {
+      setTimeout(async() => {
+        bot.sendDocument(msg.chat.id, res);
+      }, 1000 * i);
+    });
+    msg.reply.text(caption);
   } catch (e) {
        msg.reply.text(e.toString());
         bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());
@@ -170,28 +162,4 @@ function findUrl(text) {
   function isUrl(str) {
   const pattern = /^https?:\/\//;
   return pattern.test(str);
-}
-
-async function getBuffer(url) {
-  const response = await fetch(url);
-  const buffer = await response.buffer();
-  return buffer;
-}
-
-
-function getFileSize(url) {
-  return fetch(url, {
-    method: "HEAD"
-  })
-  .then(response => {
-    if(response.ok) {
-      const contentLength = response.headers.get('content-length');
-      return contentLength;
-    } else {
-      throw new Error('Network response was not ok.');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
 }

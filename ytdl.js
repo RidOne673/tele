@@ -141,7 +141,7 @@ if (!msg.text.includes("//youtu")) return  msg.reply.text('Maaf link youtube tid
    let buff = await getBuffer(link);
   bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
-Tiktok Downloader
+Youtube Video Downloader
 
 Title : ${hasil.title}
 Quality : ${res.quality}p
