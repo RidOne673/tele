@@ -143,7 +143,7 @@ info donasi : /donate
 `
     hasil.url_list.forEach(async(res, i) => {
       setTimeout(async() => {
-        bot.sendVideo(msg.chat.id, res);
+        bot.sendDocument(msg.chat.id, res);
       }, 1000 * i);
     });
     msg.reply.text(caption);
