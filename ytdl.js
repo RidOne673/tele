@@ -61,7 +61,7 @@ bot.on(["/ping"], async(msg) => {
       await msg.reply.text('Testing speed...');
       let neww = performance.now();
       let speed = neww - old;
-  let hass = `
+	let hass = `
 Merespon dalam ${speed} millidetik
 
 💻 Server Info :
@@ -74,43 +74,43 @@ ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.m
 `.trim();
 
 // Kirimkan informasi Server
-  console.log(hass);
-  msg.reply.text(hass).then (() => {
+	console.log(hass);
+	msg.reply.text(hass).then (() => {
 
-  // Kirimkan informasi Total CPU Usage
-  if (cpus[0]) {
-    let totalCPU = `
+	// Kirimkan informasi Total CPU Usage
+	if (cpus[0]) {
+	  let totalCPU = `
 Total CPU Usage
 ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
 `.trim();
-    console.log(totalCPU);
-    msg.reply.text(totalCPU);
-  }
-  }).then(()=> {
+	  console.log(totalCPU);
+	  msg.reply.text(totalCPU);
+	}
+	}).then(()=> {
 
-  // Kirimkan informasi CPU Core Usage per Core
-  setTimeout(() => {
-  cpus.forEach((cpu, i) => {
-    setTimeout(() => {
-    let coreCPU = `
+	// Kirimkan informasi CPU Core Usage per Core
+	setTimeout(() => {
+	cpus.forEach((cpu, i) => {
+	  setTimeout(() => {
+	  let coreCPU = `
 CPU Core ${i + 1} Usage
 ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- ${(type).padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
 `.trim();
-    console.log(coreCPU);
-    msg.reply.text(coreCPU);
-  },300 * i);
-  });
-  },500);
-  });
+	  console.log(coreCPU);
+	  msg.reply.text(coreCPU);
+	},300 * i);
+	});
+	},500);
+	});
 });
 
 bot.on(["/uptime"], async(msg) => {
   uptime = process.uptime();
-    hours = Math.floor(uptime / 3600);
-    minutes = Math.floor(uptime % 3600 / 60);
-    seconds = Math.floor(uptime % 60);
+		hours = Math.floor(uptime / 3600);
+		minutes = Math.floor(uptime % 3600 / 60);
+		seconds = Math.floor(uptime % 60);
 
-    msg.reply.text(`Sistem telah aktif selama ${hours} jam ${minutes} menit ${seconds} detik.`);
+		msg.reply.text(`Sistem telah aktif selama ${hours} jam ${minutes} menit ${seconds} detik.`);
 })
 
 bot.on('text', async (msg) => {
@@ -151,10 +151,10 @@ Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
 
-  bot.sendVideo(msg.chat.id, buff, { caption: caption });
+  bot.sendDocument(msg.chat.id, buff, { caption: caption });
   } catch (e) {
        msg.reply.text(e.toString());
-        bot.sendDocument(global.ownId, "Terjadi error\n\n" + e.toString());
+        bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());
         }
  }
 });
