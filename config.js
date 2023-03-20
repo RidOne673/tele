@@ -6,6 +6,7 @@ global.ytdlTeleApi = '6013830435:AAHRkgj2lYN57tgVeFzFBHbl0JgKG_1noEo'
 global.ytAudioApi = '5426871915:AAGB1jId4OFtaan1C4SpDDnabwsi0Bsxbkw'
 global.igDlApi = '5822908976:AAGqqpvPSjOsSV3xraVNV-NQg35_08zZMoA'
 global.fbdlApi = '5443079145:AAGIkyS0VOAh0-XFDoJ3FzIh41mnSu-CAXI'
+global.twdlApi = '6072975132:AAEXzzogJ5TP1i-jBOqWTOZQ95XIUayuyl0'
 
 //Chat GPT acces token
 global.gptApi = ''
@@ -32,6 +33,7 @@ global.moreBot = `Octave memiliki beberapa jenis bot sebagai berikut :
 🪶 Tiktok Downloader bot: @octv_tiktokdownloader_bot
 🪶 Youtube Video Downloader: @octv_ytdl_bot
 🪶 Youtube Audio Downloader: @octv_audioytdl_bot
+🪶 Twitter Downloader: @octv_twdl_bot
 `
 
 //Keyword badword
