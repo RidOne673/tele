@@ -14,11 +14,11 @@ const {
   findUrl,
   isUrl,
   fetchJson 
-} = require("./lib/function");
+} = require("./../lib/function");
 
 let exec = util.promisify(cp.exec).bind(cp);
 
-require('./config');
+require('./../config');
 
 const bot = new TeleBot(global.teleApi);
 
@@ -55,11 +55,11 @@ let newData = {
 }
 
 // membaca file database.json
-fs.readFile("./database.json", "utf8", (err, data) => {
+fs.readFile("./../database.json", "utf8", (err, data) => {
   if (err) {
     if (err.code === "ENOENT") {
       // file tidak ada, membuat file baru
-      fs.open("./database.json", "w", (err, fd) => {
+      fs.open("./../database.json", "w", (err, fd) => {
         if (err) {
           console.error(err);
           return;
@@ -94,7 +94,7 @@ fs.readFile("./database.json", "utf8", (err, data) => {
 
 const writeToFile = () => {
   // menulis data ke file database.json
-  fs.writeFile("./database.json", JSON.stringify(global.db, null, 2), err => {
+  fs.writeFile("./../database.json", JSON.stringify(global.db, null, 2), err => {
     if (err) {
       console.error(err);
       return;

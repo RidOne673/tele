@@ -9,9 +9,9 @@ const {
   findUrl,
   isUrl,
   fetchJson 
-} = require("./lib/function");
+} = require("./../lib/function");
 
-require('./config');
+require('./../config');
 
 const bot = new TeleBot(global.TTteleApi);
 
