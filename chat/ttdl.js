@@ -1,4 +1,4 @@
-const { download } = require("./lib/tt");
+const { download } = require("../lib/tt");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
@@ -9,9 +9,9 @@ const {
   findUrl,
   isUrl,
   fetchJson 
-} = require("./../lib/function");
+} = require("../lib/function");
 
-require('./../config');
+require('../config');
 
 const bot = new TeleBot(global.TTteleApi);
 

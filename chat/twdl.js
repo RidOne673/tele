@@ -5,12 +5,12 @@ const {
   findUrl,
   isUrl,
   fetchJson 
-} = require("./../lib/function");
+} = require("../lib/function");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
 
-require('./../config');
+require('../config');
 
 const bot = new TeleBot(global.twdlApi);
 
