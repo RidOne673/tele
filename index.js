@@ -1,4 +1,4 @@
-//const keep_alive = require('./lib/keep_alive');
+const keep_alive = require('./lib/keep_alive');
 const http = require('http');
 
 require("./config");
@@ -6,8 +6,8 @@ require("./chat/ttdl");
 require("./chat/chatgpt");
 require("./chat/ytdl");
 require("./chat/aytdl");
-require("./chat/igdl.js");
-require("./chat/fbdl.js");
+require("./chat/igdl");
+require("./chat/fbdl");
 require("./chat/twdl");
 
 const server = http.createServer((req, res) => {
