@@ -1,13 +1,14 @@
-const keep_alive = require('./keep_alive');
+//const keep_alive = require('./lib/keep_alive');
 const http = require('http');
 
-require("./ttdl");
-require("./chatgpt");
-require("./ytdl");
-require("./aytdl");
-require("./igdl.js");
-require("./fbdl.js");
 require("./config");
+require("./chat/ttdl");
+require("./chat/chatgpt");
+require("./chat/ytdl");
+require("./chat/aytdl");
+require("./chat/igdl.js");
+require("./chat/fbdl.js");
+require("./chat/twdl");
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
