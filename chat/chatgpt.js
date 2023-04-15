@@ -312,7 +312,7 @@ ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- 
             msg.reply.text(response.data.choices[0].text);
           }
         } catch (err) {
-          msg.reply.text('Maaf saya tidak mengerti tolong ulangi sekali lagi.');
+          msg.reply.text('Maaf saya tidak mengerti  atau mungkin server sedang error, tolong ulangi sekali lagi.');
           bot.sendMessage(global.ownId, "Terjadi error\n\n" + err.toString() + "\n pada : \n\n" + JSON.stringify(newData));
         }
       }
