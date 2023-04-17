@@ -154,7 +154,7 @@ Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
 
-  bot.sendDocument(msg.chat.id, buff, { caption: caption });
+  bot.sendVideo(msg.chat.id, buff, { caption: caption });
   } catch (e) {
        msg.reply.text(e.toString());
         bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());
