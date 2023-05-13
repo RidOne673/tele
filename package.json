@@ -25,6 +25,7 @@
     "openai": "^3.1.0",
     "os": "^0.1.2",
     "perf_hooks": "^0.0.1",
+    "snapsave-downloader": "^6.9.5",
     "telebot": "^1.4.1",
     "util": "^0.12.5"
   }
