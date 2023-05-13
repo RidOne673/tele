@@ -1,4 +1,4 @@
-const instagramGetUrl = require("fg-ig");
+const snapsave = require("snapsave-downloader");
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
@@ -134,7 +134,7 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
  if (isUrl(msg.text)) {
 if (!msg.text.includes("instagram.com/")) return  msg.reply.text('Maaf link instagram tidak terdeteksi.');
   try {
-  let hasil = await instagramGetUrl(findUrl(msg.text)[0]);
+  let hasil = await snapsave(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses');
     bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
@@ -143,9 +143,9 @@ Instagram Downloader
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-    hasil.url_list.forEach(async(res, i) => {
+    hasil.data.forEach(async(res, i) => {
       setTimeout(async() => {
-        bot.sendDocument(msg.chat.id, res);
+        bot.sendDocument(msg.chat.id, res.url);
       }, 1000 * i);
     });
     msg.reply.text(caption);
