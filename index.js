@@ -9,6 +9,8 @@ require("./chat/aytdl");
 require("./chat/igdl");
 require("./chat/fbdl");
 require("./chat/twdl");
+require("./chat/prayer");
+
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
