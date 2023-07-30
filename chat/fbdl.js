@@ -2,6 +2,7 @@ const { fbdl2 } = require('vihangayt-fbdl')
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
+const shortUrl = require("node-short-url-normal");
 const { 
   uptime,
   getFileSize,
@@ -137,7 +138,7 @@ if (!regex.test(findUrl(msg.text)[0])) return  msg.reply.text('Maaf link Faceboo
    if (msg.text.includes("stories")) return msg.reply.text("Tidak didukung untuk fb stories.");
   try {
   let hasil = await fbdl2(findUrl(msg.text)[0]);
-  msg.reply.text('Sedang diproses');
+  msg.reply.text('Sedang diproses');o
     bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
 Facebook Downloader
@@ -146,7 +147,8 @@ Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
 
-
+msg.reply.text(`Jika dirasa video terlalu lama terkirim, gunakan tautan dibawah untuk menonton atau mengunduh secara manual.\n\n\n${await shortUrl(hasil.result.SD)}`);
+  
  try {
         let res = await getBuffer(hasil.result.SD);
         bot.sendVideo(msg.chat.id, res, { caption: caption });
