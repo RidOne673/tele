@@ -1,4 +1,4 @@
-const instagramGetUrl = require("fg-ig");
+const { fbdl2 } = require('vihangayt-fbdl')
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
@@ -136,7 +136,7 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
 if (!regex.test(findUrl(msg.text)[0])) return  msg.reply.text('Maaf link Facebook tidak terdeteksi.');
    if (msg.text.includes("stories")) return msg.reply.text("Tidak didukung untuk fb stories.");
   try {
-  let hasil = await instagramGetUrl(findUrl(msg.text)[0]);
+  let hasil = await fbdl2(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses');
     bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
@@ -145,12 +145,14 @@ Facebook Downloader
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-    hasil.url_list.forEach(async(res, i) => {
-      setTimeout(async() => {
-        bot.sendDocument(msg.chat.id, res);
-      }, 1000 * i);
-    });
-    msg.reply.text(caption);
+
+
+ try {
+        let res = await getBuffer(hasil.result.SD);
+        bot.sendVideo(msg.chat.id, res, { caption: caption });
+     } catch (err) {
+      msg.reply.text(err.toString());
+     }
   } catch (e) {
        msg.reply.text(e.toString());
         bot.sendMessage(global.ownId, "Terjadi error\n\n" + e.toString());

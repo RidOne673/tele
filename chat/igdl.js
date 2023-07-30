@@ -1,4 +1,4 @@
-const snapsave = require("snapsave-downloader");
+const ig = require('instagram-url-dl')
 const TeleBot = require('telebot');
 const moment = require('moment-timezone');
 const os = require('os');
@@ -134,7 +134,7 @@ const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss');
  if (isUrl(msg.text)) {
 if (!msg.text.includes("instagram.com/")) return  msg.reply.text('Maaf link instagram tidak terdeteksi.');
   try {
-  let hasil = await snapsave(findUrl(msg.text)[0]);
+  let hasil = await ig(findUrl(msg.text)[0]);
   msg.reply.text('Sedang diproses');
     bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
