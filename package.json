@@ -23,6 +23,7 @@
     "lodash": "^4.17.21",
     "moment-timezone": "^0.5.40",
     "node-fetch": "^2.6.1",
+    "node-short-url-normal": "^1.0.2",
     "openai": "^3.1.0",
     "os": "^0.1.2",
     "perf_hooks": "^0.0.1",
