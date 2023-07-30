@@ -138,7 +138,7 @@ if (!regex.test(findUrl(msg.text)[0])) return  msg.reply.text('Maaf link Faceboo
    if (msg.text.includes("stories")) return msg.reply.text("Tidak didukung untuk fb stories.");
   try {
   let hasil = await fbdl2(findUrl(msg.text)[0]);
-  msg.reply.text('Sedang diproses');o
+  msg.reply.text('Sedang diproses');
     bot.sendChatAction(msg.chat.id, 'upload_video');
   let caption = `
 Facebook Downloader
@@ -146,9 +146,7 @@ Facebook Downloader
 Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
-
-  let short = await shortUrl(hasil.result.SD);
-  msg.reply.text(`Jika dirasa video terlalu lama terkirim, gunakan tautan dibawah untuk menonton atau mengunduh secara manual.\n\n\n${short}`);
+  msg.reply.text(`Jika dirasa video terlalu lama terkirim, gunakan tautan dibawah untuk menonton atau mengunduh secara manual.\n\n\nSD : ${await shortUrl(hasil.result.SD)}\nHD : ${await shortUrl(hasil.result.HD)}`);
   
  try {
         let res = await getBuffer(hasil.result.SD);
