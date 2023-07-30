@@ -147,7 +147,8 @@ Jangan lupa untuk support bot ini dengan berdonasi.
 info donasi : /donate
 `
 
-msg.reply.text(`Jika dirasa video terlalu lama terkirim, gunakan tautan dibawah untuk menonton atau mengunduh secara manual.\n\n\n${await shortUrl(hasil.result.SD)}`);
+  let short = await shortUrl(hasil.result.SD);
+  msg.reply.text(`Jika dirasa video terlalu lama terkirim, gunakan tautan dibawah untuk menonton atau mengunduh secara manual.\n\n\n${short}`);
   
  try {
         let res = await getBuffer(hasil.result.SD);
